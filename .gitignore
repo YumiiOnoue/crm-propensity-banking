@@ -219,11 +219,6 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
-data/*.csv
-data/*.db
-data/*.sqlite
-data/*.sqlite3
-
 reports/*.csv
 reports/*.png
 reports/*.joblib
