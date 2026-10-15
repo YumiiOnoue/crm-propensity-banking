@@ -1,3 +1,14 @@
+-- =============================================================================
+-- Arquivo: 02_data_validation.sql
+-- Descrição: Validação da qualidade dos dados e análise preliminar da staging.
+-- Etapas executadas:
+--   1. Integridade volumétrica: reconciliação de linhas (raw vs. staging).
+--   2. Verificação de balanceamento da variável-alvo (target).
+--   3. Mapeamento de completude e valores ausentes (NULLs) em atributos-chave.
+--   4. Checagem de consistência e valores plausíveis (outliers/inválidos em idade).
+--   5. Auditoria de integridade do target (verificação de nulos na classe).
+--   6. Análise bivariada preliminar: taxa de conversão por ocupação (job).
+-- =============================================================================
 
 -- 1. Comparação entre base bruta e base tratada
 SELECT
