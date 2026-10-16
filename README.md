@@ -13,7 +13,7 @@ Como priorizar clientes para uma oferta bancária considerando a probabilidade e
 ## 📊 Dados
 
 Os dados foram extraídos do [UCI Machine Learning Repository](https://archive.ics.uci.edu/dataset/222/bank+marketing).
-Para ver a descrição detalhada de cada atributo e tipos de dados, consulte o nosso [Dicionário de Dados](data/data_dictionary.md).
+Para ver a descrição detalhada de cada atributo e tipos de dados, consulte o nosso [Dicionário de Dados](data/README.md).
 
 O dataset contém informações de campanhas de marketing direto de uma instituição financeira portuguesa. A variável-alvo indica se o cliente contratou um depósito a prazo.
 
