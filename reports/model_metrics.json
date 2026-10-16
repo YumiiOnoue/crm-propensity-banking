@@ -1,41 +1,71 @@
 {
-    "benchmark": [
-        {
-            "Modelo": "XGBoost",
-            "ROC-AUC": 0.80185100134586,
-            "PR-AUC": 0.4639978196034083,
-            "Limiar Ótimo": 0.6490509510040283,
-            "F1-Score": 0.4988344988344988,
-            "Precisão": 0.4921803127874885,
-            "Recall": 0.505671077504726,
-            "Taxa Top 10%": 0.5270718232044199,
-            "Lift@10%": 4.505019373570481
-        },
-        {
-            "Modelo": "Random Forest",
-            "ROC-AUC": 0.7950497920841653,
-            "PR-AUC": 0.4379731699574909,
-            "Limiar Ótimo": 0.6132833194020946,
-            "F1-Score": 0.4751934456076468,
-            "Precisão": 0.45829675153643545,
-            "Recall": 0.4933837429111531,
-            "Taxa Top 10%": 0.5016574585635359,
-            "Lift@10%": 4.287796217192869
-        },
-        {
-            "Modelo": "Regressão Logística",
-            "ROC-AUC": 0.7685865392696372,
-            "PR-AUC": 0.4050613771947075,
-            "Limiar Ótimo": 0.6352245271864035,
-            "F1-Score": 0.44761904761904764,
-            "Precisão": 0.4510556621880998,
-            "Recall": 0.444234404536862,
-            "Taxa Top 10%": 0.47845303867403316,
-            "Lift@10%": 4.089462030935049
-        }
+    "modelo": "XGBoost",
+    "random_state": 42,
+    "test_size": 0.2,
+    "cv_folds": 5,
+    "feature_names": [
+        "age",
+        "job",
+        "marital",
+        "education",
+        "default_credit",
+        "balance",
+        "housing",
+        "loan",
+        "contact",
+        "day",
+        "month",
+        "pdays",
+        "previous_contact",
+        "previous",
+        "poutcome"
     ],
-    "melhor_modelo": "XGBoost",
-    "total_treino": 36168,
-    "total_teste": 9043,
-    "taxa_base_teste": 0.11699657193409267
+    "threshold": 0.6067042946815491,
+    "roc_auc": 0.8032200617178002,
+    "average_precision": 0.4679044153336042,
+    "precision": 0.4587378640776699,
+    "recall": 0.5359168241965974,
+    "f1": 0.4943330427201395,
+    "n_train": 36168,
+    "n_test": 9043,
+    "positive_rate_test": 0.11699657193409267,
+    "baseline_acceptance_rate_test": 0.11699657193409267,
+    "top_10_percent_acceptance_rate": 0.523756906077348,
+    "lift_at_10_percent": 4.4766859183907926,
+    "top_10_percent_n": 905,
+    "benchmark_comparativo": [
+        {
+            "modelo": "LogisticRegression",
+            "roc_auc": 0.7685865392696372,
+            "average_precision": 0.4050613771947075,
+            "threshold_otimo": 0.6520353186459162,
+            "f1": 0.44323252354982645,
+            "precision": 0.46611053180396245,
+            "recall": 0.4224952741020794,
+            "taxa_top_10_percent": 0.47845303867403316,
+            "lift_at_10_percent": 4.089462030935049
+        },
+        {
+            "modelo": "RandomForest",
+            "roc_auc": 0.7946146070195417,
+            "average_precision": 0.4328286267554884,
+            "threshold_otimo": 0.5865657571082398,
+            "f1": 0.46663833404164895,
+            "precision": 0.42393822393822395,
+            "recall": 0.5189035916824196,
+            "taxa_top_10_percent": 0.4972375690607735,
+            "lift_at_10_percent": 4.250018276953284
+        },
+        {
+            "modelo": "XGBoost",
+            "roc_auc": 0.8032200617178002,
+            "average_precision": 0.4679044153336042,
+            "threshold_otimo": 0.6067042946815491,
+            "f1": 0.4943330427201395,
+            "precision": 0.4587378640776699,
+            "recall": 0.5359168241965974,
+            "taxa_top_10_percent": 0.523756906077348,
+            "lift_at_10_percent": 4.4766859183907926
+        }
+    ]
 }
