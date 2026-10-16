@@ -47,16 +47,48 @@ Para evitar vazamento de dados (data leakage), atributos posteriores ao contato 
 
 A base foi dividida de forma estratificada em 80% treino (36.168 linhas) e 20% teste (9.043 linhas). Foram avaliados três algoritmos com tratamento específico de desbalanceamento de classes:
 
-| Modelo | ROC-AUC | PR-AUC | Limiar Ótimo | F1​-Score | Precisão | Recall | Conversão Top 10% | Lift @10% | 
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| XGBoost | |  |  | |  |  |  |  |
-| Regressão Logística |  |  |  | | |  |  |  |
-| Random Forest |  |  |  |  |  |  | |  |
+| Modelo | ROC-AUC | PR-AUC | Limiar Ótimo | F1-Score | Precisão | Recall | Conversão Top 10% | Lift @10% |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| XGBoost 🏆 | 0.8018 | 0.4640 | 0.6491 | 0.4988 | 0.4922 | 0.5057 | 52.71% | 4.51x |
+| Regressão Logística | 0.7686 | 0.4051 | 0.6352 | 0.4476 | 0.4511 | 0.4442 | 47.85% | 4.09x |
+| Random Forest | 0.7950 | 0.4380 | 0.6133 | 0.4752 | 0.4583 | 0.4934 | 50.17% | 4.29x |
 
 
 
 ## 🎯 Recomendações Estratégicas para o CRM & Negócio
 
+Com base nos padrões identificados na análise exploratória e nas probabilidades geradas pelo modelo preditivo, estruturaram-se recomendações táticas e estratégicas para otimizar as campanhas de telemarketing e a alocação de recursos operacionais:
+
+**1. Estratégia de Priorização por Decis (Eficiência do Call Center)**
+* **Foco no Top 10% mais propenso:** Ao priorizar o primeiro decil de clientes classificados pelo modelo (`test_propensity_scores.csv`), a taxa de conversão sobe de **11,70% (média da base)** para **52,71%**, representando um **Lift de 4,51x**.
+* **Segmentação da Régua de Contacto:**
+  * **Alta Propensão (probabilidade maior ou igual a 0,64):** Encaminhar para contacto telefónico ativo com operadores seniores ou consultores dedicados a investimentos.
+  * **Média Propensão (probabilidade entre 0,35 e 0,64):** Ativação por canais digitais de baixo custo (notificações *push* na app, e-mail marketing ou banners personalizados no *internet banking*).
+  * **Baixa Propensão (probabilidade menor que 0,35):** Excluir de campanhas ativas de curto prazo para evitar fadiga de contacto e desperdício de orçamento.
+
+**2. Gestão do Histórico do Cliente (*Relationship Banking*)**
+* **Régua Prioritária para Sucesso Prévio (`poutcome = 'success'`):** Clientes que aderiram a produtos em campanhas anteriores apresentaram uma propensão multiplicada por mais de **10 vezes** (Odds Ratio aproximadamente 10,56). Este grupo deve ter atendimento preferencial no lançamento de novos produtos financeiros.
+* **Política de Recontacto (`pdays` e `campaign`):** Clientes contatados repetidamente na mesma campanha sem conversão tendem a apresentar taxa de rejeição progressiva. Recomenda-se estipular uma política de tolerância máxima (ex.: fixar quantidade de tentativas por período) para mitigar insatisfação e proteger a reputação da marca.
+
+**3. Ajuste de Calendário e Sazonalidade**
+* **Alocação de Esforço Comercial:** Concentrar campanhas nos meses com maiores probabilidades históricas de adesão:
+  * **Março (Odds Ratio aproximadamente 3,06):** Período de planeamento fiscal e rebalanceamento de carteiras.
+  * **Outubro e Dezembro (Odds Ratio maior ou igual a 2,15):** Meses com injeção de liquidez adicional (subsídios de férias e fim de ano).
+* **Desaceleração em Meses de Baixa Resposta:** Em meses como janeiro (Odds Ratio aproximadamente 0,34) e agosto (Odds Ratio aproximadamente 0,40), reduzir o volume de chamadas ativas para depósitos a prazo, redirecionando o esforço para outros produtos.
+
+**4. Segmentação por Ocupação e Situação Financeira**
+* **Aposta em Perfis Conservadores:** Clientes aposentados (taxa de adesão média de **22,79%**) e estudantes (**28,68%**) têm respostas acima do dobro da média global:
+  * *Aposentados:* Têm preferência por aplicações previsíveis e com baixo risco de capital, alinhando-se com depósitos a prazo fixo.
+  * *Estudantes:* Apresentam apetite por produtos com baixos montantes mínimos de entrada e objetivos de poupança definidos.
+* **Atenção ao Crédito à Habitação (`housing = 'yes'`):** Clientes com prestações imobiliárias ativas têm taxas de adesão significativamente menores a depósitos a prazo devido ao comprometimento da renda mensal. Para este perfil, produtos com liquidez diária ou planos de amortização são mais recomendados.
+
+**5. Higienização Cadastral e Governança de Canais**
+* **Qualificação de Contactos:** Clientes com canal de contacto desconhecido (`contact = 'unknown'`) apresentaram redução de **70%** na probabilidade de adesão (Odds Ratio aproximadamente 0,30). 
+* **Ação Corretiva:** Implementar gatilhos de atualização de número de contato e e-mail no login da aplicação bancária antes da execução de novas campanhas.
+
+**6. Métricas de Acompanhamento e Governança (MLOps)**
+* **Testes A/B em Produção:** Manter um grupo de controle de 10% da base abordado de forma aleatória para mensurar continuamente o ganho financeiro incremental (*uplift*) do modelo.
+* **Monitorização de Desvio (*Data Drift*):** Auditar trimestralmente a estabilidade das distribuições demográficas e macroeconômicas para identificar eventuais quedas de desempenho no limiar de corte (0,64).
 
 
 ## 🚧 Limitações
@@ -143,7 +175,7 @@ Os artefatos gerados serão salvos automaticamente em:
 * `reports/test_propensity_scores.csv`
 * `models/best_model.joblib`
 
-# 🛣️ Próximos passos
+## 🛣️ Próximos passos
 
 * Validar o modelo em campanhas futuras.
 * Testar diferentes tamanhos de público prioritário.
